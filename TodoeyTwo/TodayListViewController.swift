@@ -8,7 +8,7 @@
 
 import UIKit
 class TodayListViewController: UITableViewController {
-    let ItemArray = ["one" , "two" , "three"]
+    var ItemArray = ["one" , "two" , "three"]
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -32,6 +32,28 @@ class TodayListViewController: UITableViewController {
         }
         tableView.deselectRow(at: indexPath, animated: true)
        
+    }
+    @IBAction func AddButtonPresed(_ sender: UIBarButtonItem) {
+         var textFiled = UITextField()
+        let alert = UIAlertController(title: "add new today item", message: "jhgfdsa", preferredStyle: .alert)
+        let action = UIAlertAction(title: "add item", style: .default) { (action) in
+        self.ItemArray.append(textFiled.text!)
+        self.tableView.reloadData()
+        }
+          
+           
+            
+            alert.addTextField { (alertTextField) in
+                alertTextField.placeholder = "creat new item"
+                //  print(alertTextField.text)
+                textFiled = alertTextField
+                
+            }
+            alert.addAction(action)
+            present(alert , animated: true , completion: nil)
+            
+            
+            
     }
 }
 
