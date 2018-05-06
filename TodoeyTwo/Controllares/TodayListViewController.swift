@@ -9,34 +9,37 @@
 import UIKit
 class TodayListViewController: UITableViewController {
     var ItemArray = [Item]()
-    let defultes = UserDefaults.standard
+    //let defultes = UserDefaults.standard
+    let DataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("item.plist")
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let newItem = Item()
-        newItem.title = "one"
-        ItemArray.append(newItem)
+        print(DataFilePath)
+        LoadItem()
+//        let newItem = Item()
+//        newItem.title = "one"
+//        ItemArray.append(newItem)
+//
+//
+//        let newItem2 = Item()
+//        newItem2.title = "two"
+//        ItemArray.append(newItem2)
+//
+//
+//        let newItem3 = Item()
+//        newItem3.title = "three"
+//        ItemArray.append(newItem3)
+//
+//        let newItem4 = Item()
+//        newItem4.title = "three"
+//        ItemArray.append(newItem4)
+//
+    }
         
         
-        let newItem2 = Item()
-        newItem2.title = "two"
-        ItemArray.append(newItem2)
-        
-        
-        let newItem3 = Item()
-        newItem3.title = "three"
-        ItemArray.append(newItem3)
-        
-        let newItem4 = Item()
-        newItem4.title = "three"
-        ItemArray.append(newItem4)
-        
-        
-        
-        
-        if let   items = defultes.array(forKey: "ToDoListAraay") as? [Item] {
-            ItemArray = items }
-        }
+//        if let   items = defultes.array(forKey: "ToDoListAraay") as? [Item] {
+//            ItemArray = items }
+//        }
        
     
     
@@ -62,6 +65,7 @@ class TodayListViewController: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         ItemArray[indexPath.row].done = !ItemArray[indexPath.row].done
+        SavItems()
 //        if ItemArray[indexPath.row].done == false{
 //            ItemArray[indexPath.row].done = true
 //        }else{
@@ -73,19 +77,23 @@ class TodayListViewController: UITableViewController {
 //        }else {
 //        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
 //        }
-        tableView.reloadData()
+       // tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
        
     }
     @IBAction func AddButtonPresed(_ sender: UIBarButtonItem) {
          var textFiled = UITextField()
-        let newItem = Item()
-        newItem.title = textFiled.text!
+        
         let alert = UIAlertController(title: "add new today item", message: "jhgfdsa", preferredStyle: .alert)
+       // newItem.title = textFiled.text!
+        
         let action = UIAlertAction(title: "add item", style: .default) { (action) in
+            let newItem = Item()
+            newItem.title = textFiled.text!
         self.ItemArray.append(newItem)
-            self.defultes.set(self.ItemArray, forKey: "ToDoListAraay")
-        self.tableView.reloadData()
+           self.SavItems()
+           // self.defultes.set(self.ItemArray, forKey: "ToDoListAraay")
+            
         }
           
            
@@ -99,8 +107,30 @@ class TodayListViewController: UITableViewController {
             alert.addAction(action)
             present(alert , animated: true , completion: nil)
             
+        
             
-            
+    }
+    func SavItems(){
+        let encoder = PropertyListEncoder()
+        do {
+            let  data = try encoder.encode(ItemArray)
+            try data.write(to: DataFilePath!)
+        }catch{
+            print("eeer \(error)")
+        }
+        self.tableView.reloadData()
+    }
+    func LoadItem(){
+        
+        if  let data  = try? Data(contentsOf: DataFilePath!) {
+            let decoder = PropertyListDecoder()
+            do {
+            ItemArray = try decoder.decode([Item].self, from: data)
+        } catch {
+            print("this is errrror \(errno)")
+        }
+        }
+        
     }
 }
 
