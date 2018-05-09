@@ -157,11 +157,12 @@ extension TodayListViewController :UISearchBarDelegate {
             tableView.reloadData()
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()
+                
             }
 
         }
     }
-
+  
 
 }
 
