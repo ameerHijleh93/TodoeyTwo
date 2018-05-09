@@ -13,6 +13,7 @@
 		820ED715209B38C70054C79A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 820ED713209B38C70054C79A /* LaunchScreen.storyboard */; };
 		820ED71D209B39680054C79A /* TodayListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820ED71C209B39680054C79A /* TodayListViewController.swift */; };
 		827CCD9A209F350A00CCDADA /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 827CCD98209F350A00CCDADA /* DataModel.xcdatamodeld */; };
+		82FD217E20A1993D00460A0E /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FD217D20A1993D00460A0E /* CategoryTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		820ED716209B38C70054C79A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		820ED71C209B39680054C79A /* TodayListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayListViewController.swift; sourceTree = "<group>"; };
 		827CCD99209F350A00CCDADA /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		82FD217D20A1993D00460A0E /* CategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 		827CCD74209EECD200CCDADA /* Controllares */ = {
 			isa = PBXGroup;
 			children = (
+				82FD217D20A1993D00460A0E /* CategoryTableViewController.swift */,
 				820ED71C209B39680054C79A /* TodayListViewController.swift */,
 			);
 			path = Controllares;
@@ -173,6 +176,7 @@
 				820ED71D209B39680054C79A /* TodayListViewController.swift in Sources */,
 				827CCD9A209F350A00CCDADA /* DataModel.xcdatamodeld in Sources */,
 				820ED70B209B38C70054C79A /* AppDelegate.swift in Sources */,
+				82FD217E20A1993D00460A0E /* CategoryTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,36 +8,24 @@
 
 import UIKit
 import CoreData
-class TodayListViewController: UITableViewController {
+class TodayListViewController: UITableViewController /*, UISearchBarDelegate , UIPickerViewDelegate , UIImagePickerControllerDelegate*/{
     var ItemArray = [Item]()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    //let defultes = UserDefaults.standard
+    var selectedCategory :Category?
+    {
+        didSet {
+            LoadItem()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
       print( FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
        // print(DataFilePath)
-      LoadItem()
-//        let newItem = Item()
-//        newItem.title = "one"
-//        ItemArray.append(newItem)
-//
-//
-//        let newItem2 = Item()
-//        newItem2.title = "two"
-//        ItemArray.append(newItem2)
-//
-//
-//        let newItem3 = Item()
-//        newItem3.title = "three"
-//        ItemArray.append(newItem3)
-//
-//        let newItem4 = Item()
-//        newItem4.title = "three"
-//        ItemArray.append(newItem4)
-//
+     // LoadItem()
+
     }
-        
+    
         
 //        if let   items = defultes.array(forKey: "ToDoListAraay") as? [Item] {
 //            ItemArray = items }
@@ -99,6 +87,7 @@ class TodayListViewController: UITableViewController {
             let newItem = Item(context: self.context)
             newItem.title = textFiled.text!
             newItem.done = false
+            newItem.parenCtategory = self.selectedCategory
         self.ItemArray.append(newItem)
            self.SavItems()
            // self.defultes.set(self.ItemArray, forKey: "ToDoListAraay")
@@ -128,16 +117,70 @@ class TodayListViewController: UITableViewController {
         }
         self.tableView.reloadData()
     }
-    func LoadItem(){
+    func LoadItem(with request :NSFetchRequest<Item> = Item.fetchRequest() , predicate :NSPredicate? = nil) {
 
-        let requset :NSFetchRequest<Item> = Item.fetchRequest()
+       let categoryPredicate = NSPredicate(format: "parenCtategory.name MATCHES %@", selectedCategory!.name!)
+        if let additonalPredicat = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate , additonalPredicat])
+        }else{
+            request.predicate = categoryPredicate
+        }
+//        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate , predicate])
+//        request.predicate = compoundPredicate
         do {
-          ItemArray = try context.fetch(requset)
+            ItemArray = try context.fetch(request)
         } catch {
             print("erorrrrrrrrrrrrrrrrrrrr")
         }
 
     }
+    
+}
+//MARK - Search Bar
+extension TodayListViewController :UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+      // print(searchBar.text!)
+       let  predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        
+         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+       
+        
+        LoadItem(with: request , predicate: predicate)
+    tableView.reloadData()
+        
+        
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            LoadItem()
+            tableView.reloadData()
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+
+        }
+    }
+
+
 }
 
+//        let newItem = Item()
+//        newItem.title = "one"
+//        ItemArray.append(newItem)
+//
+//
+//        let newItem2 = Item()
+//        newItem2.title = "two"
+//        ItemArray.append(newItem2)
+//
+//
+//        let newItem3 = Item()
+//        newItem3.title = "three"
+//        ItemArray.append(newItem3)
+//
+//        let newItem4 = Item()
+//        newItem4.title = "three"
+//        ItemArray.append(newItem4)
+//
 
